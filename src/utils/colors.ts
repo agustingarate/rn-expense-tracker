@@ -3,6 +3,7 @@ class Colors {
     "400": "#853af5",
     "700": "#4800e4",
     "200": "#bb93f8",
+    // "100": "#86f214",
   };
 
   static complementary = {
@@ -36,5 +37,8 @@ class Colors {
 
   static others = {
     red: "#f32d41",
+    grey: "#3b3b3b",
   };
 }
+
+export default Colors;
