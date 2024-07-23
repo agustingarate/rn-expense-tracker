@@ -23,8 +23,10 @@ function CustomButton(props: CustomButtonsProps) {
       style={({ pressed }) => pressed && [styles.pressedIOS]}
       onPress={props.onPress}
     >
-      <View style={styles.defaultButtonStyle}>
-        <Text style={styles.defaultTextStyle}>{props.title}</Text>
+      <View style={props.buttonStyle ?? styles.defaultButtonStyle}>
+        <Text style={props.textStyle ?? styles.defaultTextStyle}>
+          {props.title}
+        </Text>
       </View>
     </Pressable>
   );
