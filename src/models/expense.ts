@@ -1,10 +1,25 @@
 class Expense {
+  static lastId: string = "8";
   constructor(
     public id: string,
     public title: string,
     public date: Date,
     public expense: string,
   ) {}
+
+  copyWith(
+    id: string | null,
+    title: string | null,
+    date: Date | null,
+    expense: string | null,
+  ) {
+    return new Expense(
+      id ?? this.id,
+      title ?? this.title,
+      date ?? this.date,
+      expense ?? this.expense,
+    );
+  }
 }
 
 export const expenses = [

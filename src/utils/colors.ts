@@ -38,6 +38,7 @@ class Colors {
   static others = {
     red: "#f32d41",
     grey: "#3b3b3b",
+    white: "#fff",
   };
 }
 

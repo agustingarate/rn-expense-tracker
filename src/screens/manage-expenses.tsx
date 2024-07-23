@@ -1,9 +1,12 @@
-import { View, Text, Button, StyleSheet, Pressable } from "react-native";
-import { ManageExpensesProps, StackParams } from "./screen_types";
+import { View, StyleSheet, Pressable } from "react-native";
+import { ManageExpensesProps } from "./screen_types";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import CustomButton from "../components/custom_buttons";
 import { useContext } from "react";
 import { ExpensesContext } from "../store/expenses-context";
+import ExpenseForm, {
+  ExpenseFormInputValuesType,
+} from "../components/manage_expense/expense_form";
+import Expense, { expenses } from "../models/expense";
 
 function ManageExpenses(props: ManageExpensesProps) {
   const params = props.route.params;
@@ -13,10 +16,36 @@ function ManageExpenses(props: ManageExpensesProps) {
     props.navigation.goBack();
   }
 
-  function update() {
+  function update(values: ExpenseFormInputValuesType) {
     switch (params.mode) {
       case "edit":
+        const currentExpense = expenses.find(
+          (expense) => expense.id == params.id,
+        );
+        const newExpense = currentExpense?.copyWith(
+          null,
+          values.description,
+          new Date(values.date),
+          values.amount,
+        );
+
+        console.log(newExpense);
+
+        expensesContext.modifyExpense(newExpense!);
+        props.navigation.goBack();
+        break;
+
       case "add":
+        const expense = new Expense(
+          (+Expense.lastId + 1).toString(),
+          values.description,
+          new Date(values.date),
+          values.amount,
+        );
+        expensesContext.addExpense(expense);
+        Expense.lastId = (+Expense.lastId + 1).toString();
+        props.navigation.goBack();
+        break;
     }
   }
 
@@ -28,14 +57,7 @@ function ManageExpenses(props: ManageExpensesProps) {
   }
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.buttons}>
-        <View style={styles.button}>
-          <CustomButton title="Cancel" onPress={cancel}></CustomButton>
-        </View>
-        <View style={styles.button}>
-          <CustomButton title="Update" onPress={update}></CustomButton>
-        </View>
-      </View>
+      <ExpenseForm cancel={cancel} update={update} id={params.id} />
 
       <View style={styles.line}></View>
 
@@ -50,20 +72,12 @@ function ManageExpenses(props: ManageExpensesProps) {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    flex: 1,
-    alignItems: "center",
     padding: 20,
   },
 
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  button: {
-    marginHorizontal: 5,
-  },
   icon: {
     fontSize: 35,
+    textAlign: "center",
   },
   line: {
     width: "100%",
