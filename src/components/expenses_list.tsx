@@ -44,6 +44,7 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
             </Pressable>
           )}
           keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </View>
