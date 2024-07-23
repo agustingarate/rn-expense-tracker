@@ -1,15 +1,9 @@
-import {
-  FlatList,
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Modal,
-} from "react-native";
+import { FlatList, View, Text, StyleSheet, Pressable } from "react-native";
 import ExpenseTile from "./expenses_tile";
 import Expense from "../models/expense";
-import { useState } from "react";
-import ManageExpenses from "../screens/manage-expenses";
+import { useNavigation } from "@react-navigation/native";
+import { StackParams } from "../screens/screen_types";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type ExpensesListProps = {
   expenses: Expense[];
@@ -17,14 +11,18 @@ type ExpensesListProps = {
 };
 
 function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const navigation = useNavigation<StackNavigationProp<StackParams>>();
   let total = 0;
   expenses.forEach((expense) => {
     total = total + Number.parseFloat(expense.expense);
   });
 
-  function onPressTile() {
-    setShowModal(true);
+  function onPressTile(id: string) {
+    navigation.navigate("ManageExpenses", {
+      mode: "add",
+      id: id,
+    });
   }
 
   function onPressClose() {}
@@ -32,43 +30,37 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
   function onPressAdd() {}
 
   return (
-    <View>
-      <Modal
-        animationType="slide"
-        presentationStyle="formSheet"
-        visible={showModal}
-        style={{
-          height: 10,
-        }}
-      >
-        <ManageExpenses />
-      </Modal>
+    <View style={styles.outer}>
       <View style={styles.totalContainer}>
         <Text>{totalContainerTitle}</Text>
         <Text>{`$${total}`}</Text>
       </View>
-      <FlatList
-        data={expenses}
-        renderItem={(value) => (
-          <Pressable onPress={onPressTile}>
-            <ExpenseTile expenseItem={value.item} />
-          </Pressable>
-        )}
-        keyExtractor={(item) => item.id}
-      />
+      <View>
+        <FlatList
+          data={expenses}
+          renderItem={(value) => (
+            <Pressable onPress={() => onPressTile(value.item.id)}>
+              <ExpenseTile expenseItem={value.item} />
+            </Pressable>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
+  outer: {
+    height: "94%",
+  },
   totalContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 15,
     backgroundColor: "#fe9191",
     borderRadius: 2,
-    marginBottom: 30,
+    marginBottom: 10,
   },
-  outerContainer: {},
 });
 
 export default ExpensesList;
