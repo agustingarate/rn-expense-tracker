@@ -21,39 +21,48 @@ export default function App() {
   const Stack = createStackNavigator<StackParams>();
 
   function HandleTab() {
-    const navigation = useNavigation<StackNavigationProp<StackParams>>();
-
     return (
       <Tab.Navigator
-        screenOptions={{
-          tabBarStyle: {
-            position: "static",
-          },
-          headerRight: ({}) => {
-            return (
-              <Pressable
-                onPress={() =>
-                  navigation.navigate("ManageExpenses", { mode: "add" })
-                }
-              >
+        screenOptions={({ route, navigation }) => {
+          const icon = () => {
+            switch (route.name) {
+              case "AllExpenses":
+                return "alarm-outline";
+              case "RecentExpenses":
+                return "calendar-outline";
+            }
+          };
+
+          return {
+            tabBarStyle: {
+              position: "static",
+            },
+            headerRight: ({}) => {
+              return (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("ManageExpenses", { mode: "add" })
+                  }
+                >
+                  <Ionicons
+                    style={styles.addButton}
+                    name="add-circle-outline"
+                  ></Ionicons>
+                </Pressable>
+              );
+            },
+            headerTitleAlign: "center",
+            tabBarActiveTintColor: "#006120",
+            tabBarIcon: ({ focused, color, size }) => {
+              return (
                 <Ionicons
-                  style={styles.addButton}
-                  name="add-circle-outline"
+                  color={focused ? "#00d948" : "#888888"}
+                  name={icon()}
+                  size={size}
                 ></Ionicons>
-              </Pressable>
-            );
-          },
-          headerTitleAlign: "center",
-          tabBarActiveTintColor: "#006120",
-          tabBarIcon: ({ focused, color, size }) => {
-            return (
-              <Ionicons
-                color={focused ? "#00d948" : "#888888"}
-                name="time"
-                size={size}
-              ></Ionicons>
-            );
-          },
+              );
+            },
+          };
         }}
       >
         <Tab.Screen
