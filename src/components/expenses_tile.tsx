@@ -1,5 +1,6 @@
 import { View, Text, Button, StyleSheet } from "react-native";
 import Expense from "../models/expense";
+import Colors from "../utils/colors";
 
 type ExpenseTileProps = {
   expenseItem: Expense;
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 
   expenseContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: Colors.analogousBlue[200],
     borderRadius: 5,
     padding: 10,
     minWidth: 80,

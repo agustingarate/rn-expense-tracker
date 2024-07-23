@@ -15,6 +15,7 @@ import {
   StackNavigationProp,
 } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import Colors from "./src/utils/colors";
 
 export default function App() {
   const Tab = createBottomTabNavigator<TabsParams>();
@@ -52,11 +53,11 @@ export default function App() {
               );
             },
             headerTitleAlign: "center",
-            tabBarActiveTintColor: "#006120",
+            tabBarActiveTintColor: Colors.others.grey,
             tabBarIcon: ({ focused, color, size }) => {
               return (
                 <Ionicons
-                  color={focused ? "#00d948" : "#888888"}
+                  color={focused ? Colors.analogousPink[800] : "#888888"}
                   name={icon()}
                   size={size}
                 ></Ionicons>
@@ -94,6 +95,7 @@ export default function App() {
           <Stack.Screen
             options={{
               presentation: "modal",
+              title: "Manage Expenses",
             }}
             name="ManageExpenses"
             component={ManageExpenses}

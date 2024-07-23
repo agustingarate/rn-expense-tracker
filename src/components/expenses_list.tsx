@@ -4,6 +4,7 @@ import Expense from "../models/expense";
 import { useNavigation } from "@react-navigation/native";
 import { StackParams } from "../screens/screen_types";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Colors from "../utils/colors";
 
 type ExpensesListProps = {
   expenses: Expense[];
@@ -14,13 +15,14 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
   // const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation<StackNavigationProp<StackParams>>();
   let total = 0;
+
   expenses.forEach((expense) => {
     total = total + Number.parseFloat(expense.expense);
   });
 
   function onPressTile(id: string) {
     navigation.navigate("ManageExpenses", {
-      mode: "add",
+      mode: "edit",
       id: id,
     });
   }
@@ -32,8 +34,8 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
   return (
     <View style={styles.outer}>
       <View style={styles.totalContainer}>
-        <Text>{totalContainerTitle}</Text>
-        <Text>{`$${total}`}</Text>
+        <Text style={styles.totalContainerText}>{totalContainerTitle}</Text>
+        <Text style={styles.totalContainerText}>{`$${total}`}</Text>
       </View>
       <View>
         <FlatList
@@ -58,9 +60,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 15,
-    backgroundColor: "#fe9191",
+    backgroundColor: Colors.primary[700],
     borderRadius: 2,
     marginBottom: 10,
+  },
+  totalContainerText: {
+    color: Colors.complementary[200],
   },
 });
 
