@@ -3,10 +3,12 @@ import { ManageExpensesProps } from "./screen_types";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useContext } from "react";
 import { ExpensesContext } from "../store/expenses-context";
+
+import Expense, { expenses } from "../models/expense";
+import { deleteExpense, storeExpense, updateExpense } from "../utils/http";
 import ExpenseForm, {
   ExpenseFormInputValuesType,
 } from "../components/manage_expense/expense_form";
-import Expense, { expenses } from "../models/expense";
 
 function ManageExpenses(props: ManageExpensesProps) {
   const params = props.route.params;
@@ -19,31 +21,33 @@ function ManageExpenses(props: ManageExpensesProps) {
   function update(values: ExpenseFormInputValuesType) {
     switch (params.mode) {
       case "edit":
-        const currentExpense = expenses.find(
-          (expense) => expense.id == params.id,
-        );
-        const newExpense = currentExpense?.copyWith(
-          null,
-          values.description,
-          new Date(values.date),
-          values.amount,
-        );
+        // const currentExpense = expenses.find(
+        //   (expense) => expense.id == params.id,
+        // );
+        // const newExpense = currentExpense?.copyWith(
+        //   null,
+        //   values.description,
+        //   new Date(values.date),
+        //   values.amount,
+        // );
 
-        console.log(newExpense);
+        // console.log(newExpense);
 
-        expensesContext.modifyExpense(newExpense!);
+        // expensesContext.modifyExpense(newExpense!);
+        updateExpense(params.id!, values);
         props.navigation.goBack();
         break;
 
       case "add":
-        const expense = new Expense(
-          (+Expense.lastId + 1).toString(),
-          values.description,
-          new Date(values.date),
-          values.amount,
-        );
-        expensesContext.addExpense(expense);
-        Expense.lastId = (+Expense.lastId + 1).toString();
+        // const expense = new Expense(
+        //   (+Expense.lastId + 1).toString(),
+        //   values.description,
+        //   new Date(values.date),
+        //   values.amount,
+        // );
+        // expensesContext.addExpense(expense);
+        storeExpense(values);
+        // Expense.lastId = (+Expense.lastId + 1).toString();
         props.navigation.goBack();
         break;
     }
@@ -51,13 +55,14 @@ function ManageExpenses(props: ManageExpensesProps) {
 
   function remove() {
     if (params.id != null) {
-      expensesContext.removeExpense(params.id);
+      // expensesContext.removeExpense(params.id);
+      deleteExpense(params.id);
       props.navigation.goBack();
     }
   }
   return (
     <View style={styles.outerContainer}>
-      <ExpenseForm cancel={cancel} update={update} id={params.id} />
+      <ExpenseForm cancel={cancel} update={update} value={params.value} />
 
       <View style={styles.line}></View>
 

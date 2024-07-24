@@ -20,16 +20,17 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
     total = total + Number.parseFloat(expense.expense);
   });
 
-  function onPressTile(id: string) {
+  function onPressTile(expense: Expense) {
     navigation.navigate("ManageExpenses", {
       mode: "edit",
-      id: id,
+      id: expense.id,
+      value: {
+        amount: expense.expense,
+        description: expense.title,
+        date: expense.date.toDateString(),
+      },
     });
   }
-
-  function onPressClose() {}
-
-  function onPressAdd() {}
 
   return (
     <View style={styles.outer}>
@@ -41,7 +42,7 @@ function ExpensesList({ expenses, totalContainerTitle }: ExpensesListProps) {
         <FlatList
           data={expenses}
           renderItem={(value) => (
-            <Pressable onPress={() => onPressTile(value.item.id)}>
+            <Pressable onPress={() => onPressTile(value.item)}>
               <ExpenseTile expenseItem={value.item} />
             </Pressable>
           )}

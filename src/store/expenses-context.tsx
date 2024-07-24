@@ -20,7 +20,6 @@ function ExpenseContextProvider({ children }: { children: React.JSX.Element }) {
 
   function addExpense(expense: Expense) {
     setExpenses((list) => [expense, ...list]);
-    console.log("addddd");
   }
 
   function removeExpense(id: string) {
@@ -28,14 +27,10 @@ function ExpenseContextProvider({ children }: { children: React.JSX.Element }) {
   }
 
   function modifyExpense(newExpense: Expense) {
-    console.log(newExpense);
-
-    setExpenses((list) =>
-      list.filter((element) => element.id != newExpense.id),
-    );
-    console.log(expensesList);
-    setExpenses((list) => [newExpense, ...list]);
-    console.log(expensesList);
+    setExpenses((list) => [
+      newExpense,
+      ...list.filter((element) => element.id != newExpense.id),
+    ]);
   }
 
   const value: ExpensesContextType = {

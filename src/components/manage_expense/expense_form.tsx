@@ -14,15 +14,14 @@ export type ExpenseFormInputValuesType = {
 type ExpenseFormProps = {
   cancel: () => void;
   update: (values: ExpenseFormInputValuesType) => void;
-  id?: string;
+  value?: ExpenseFormInputValuesType;
 };
 
-function ExpenseForm({ cancel, update, id }: ExpenseFormProps) {
-  const expense = expenses.find((expense) => expense.id == id);
+function ExpenseForm({ cancel, update, value }: ExpenseFormProps) {
   const [inputValues, setInputsValues] = useState<ExpenseFormInputValuesType>({
-    amount: expense?.expense ?? "",
-    date: expense?.date.toDateString() ?? "",
-    description: expense?.title ?? "",
+    amount: value?.amount ?? "",
+    date: value?.date ?? "",
+    description: value?.description ?? "",
   });
 
   function handleInputs(
